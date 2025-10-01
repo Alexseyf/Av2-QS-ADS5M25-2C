@@ -20,7 +20,7 @@ htmlcov/
 .tox/
 
 # Temporary evidence files that might be generated during test runs
-evidence/*/*.png
+evidence
 
 # IDE specific files
 .idea/
