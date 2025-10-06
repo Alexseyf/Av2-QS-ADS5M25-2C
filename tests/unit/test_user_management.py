@@ -64,3 +64,112 @@ class TestUser:
         assert result is True
         assert user.active is False
         assert user.is_active() is False
+
+class TestUserManager:
+    def test_add_user_success(self):
+        """Testa adição de usuário com sucesso"""
+        user_manager = UserManager()
+        user = User("testuser", "test@example.com", "Password123")
+        
+        result = user_manager.add_user(user)
+        assert result is True
+        assert user_manager.get_user("testuser") == user
+
+    def test_add_user_duplicate(self):
+        """Testa adição de usuário duplicado"""
+        user_manager = UserManager()
+        user1 = User("testuser", "test@example.com", "Password123")
+        user2 = User("testuser", "different@example.com", "DiffPass456")
+        
+        user_manager.add_user(user1)
+        result = user_manager.add_user(user2)
+        assert result is False
+
+    def test_add_user_invalid_email(self):
+        """Testa adição de usuário com email inválido"""
+        user_manager = UserManager()
+        user = User("testuser", "invalid-email", "Password123")
+        
+        result = user_manager.add_user(user)
+        assert result is False
+
+    def test_add_user_invalid_password(self):
+        """Testa adição de usuário com senha inválida"""
+        user_manager = UserManager()
+        user = User("testuser", "test@example.com", "password")
+        
+        result = user_manager.add_user(user)
+        assert result is False
+
+    def test_remove_user_success(self):
+        """Testa remoção de usuário com sucesso"""
+        user_manager = UserManager()
+        user = User("testuser", "test@example.com", "Password123")
+        
+        user_manager.add_user(user)
+        result = user_manager.remove_user("testuser")
+        assert result is True
+        assert user_manager.get_user("testuser") is None
+
+    def test_remove_user_nonexistent(self):
+        """Testa remoção de usuário inexistente"""
+        user_manager = UserManager()
+        result = user_manager.remove_user("nonexistent")
+        assert result is False
+
+    def test_get_user(self):
+        """Testa obtenção de usuário"""
+        user_manager = UserManager()
+        user = User("testuser", "test@example.com", "Password123")
+        
+        user_manager.add_user(user)
+        retrieved_user = user_manager.get_user("testuser")
+        assert retrieved_user == user
+        assert user_manager.get_user("nonexistent") is None
+
+    def test_authenticate_success(self):
+        """Testa autenticação com sucesso"""
+        user_manager = UserManager()
+        user = User("testuser", "test@example.com", "Password123")
+        
+        user_manager.add_user(user)
+        result = user_manager.authenticate("testuser", "Password123")
+        assert result is True
+
+    def test_authenticate_wrong_password(self):
+        """Testa autenticação com senha incorreta"""
+        user_manager = UserManager()
+        user = User("testuser", "test@example.com", "Password123")
+        
+        user_manager.add_user(user)
+        result = user_manager.authenticate("testuser", "WrongPassword")
+        assert result is False
+
+    def test_authenticate_inactive_user(self):
+        """Testa autenticação de usuário inativo"""
+        user_manager = UserManager()
+        user = User("testuser", "test@example.com", "Password123")
+        
+        user_manager.add_user(user)
+        user.disable()
+        result = user_manager.authenticate("testuser", "Password123")
+        assert result is False
+
+    def test_list_users(self):
+        """Testa listagem de usuários ativos"""
+        user_manager = UserManager()
+        user1 = User("user1", "user1@example.com", "Password123")
+        user2 = User("user2", "user2@example.com", "Password456")
+        user3 = User("user3", "user3@example.com", "Password789")
+        
+        user_manager.add_user(user1)
+        user_manager.add_user(user2)
+        user_manager.add_user(user3)
+        
+        user2.disable()
+        
+        active_users = user_manager.list_users()
+        assert len(active_users) == 2
+        assert user1 in active_users
+        assert user2 not in active_users
+        assert user3 in active_users
