@@ -113,6 +113,5 @@ pytest tests/unit --html=evidence/report.html --self-contained-html
 
 ## Integrantes do Grupo
 - ![Alexandre Seyffert](https://avatars.githubusercontent.com/u/79027790?v=4&s=50) [Alexandre Seyffert](https://github.com/Alexseyf)
-- ![Betânia Amaral](https://avatars.githubusercontent.com/u/140624544?v=4&s=50) [Betânia Amaral](https://github.com/betaniasilva)
 - ![Wagner Vieira](https://avatars.githubusercontent.com/u/165597457?v=4&s=50) [Wagner Vieira](https://github.com/Wagner-V1eira)
 - ![Laura Ortiz](https://avatars.githubusercontent.com/u/173370106?v=4&s=50) [Laura Ortiz](https://github.com/OrtizLaura)
