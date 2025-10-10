@@ -23,7 +23,7 @@ class Product:
         return True
 
 
-class Inventory:
+class InventorySystem:
     def __init__(self):
         self.products = {}
     
